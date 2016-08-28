@@ -1,0 +1,37 @@
+- name: set up nginx
+  hosts: all
+  become: true
+
+  tasks:
+
+  - name: make nginx conf dir
+    file: path=/var/nginx/conf state=directory
+
+  - name: copy nginx config
+    template:
+      src: "templates/nginx.conf.j2"
+      dest: "/var/nginx/conf/nginx.conf"
+      owner: "www-data"
+      group: "www-data"
+      mode: 0644
+
+  - name: copy mime.types
+    template:
+      src: "files/mime.types"
+      dest: "/var/nginx/conf/mime.types"
+      owner: "www-data"
+      group: "www-data"
+      mode: 0644
+
+  - docker_service:
+      project_name: nginx
+
+      definition:
+        version: "2"
+        services:
+          nginx:
+            image: nginx
+            volumes:
+            - /var/nginx/conf:/etc/nginx:ro
+            ports:
+            - "443:443"

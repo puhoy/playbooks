@@ -1,0 +1,35 @@
+---
+- name: set up basics
+  hosts: all
+
+  tasks:
+    - apt: name={{ item }} state=installed update_cache=yes
+      become: true
+      with_items:
+       - htop
+       - git
+       - python
+       - python-dev
+       - python3
+       - python3-dev
+       - bpython3
+       - vim
+       - python3.4-venv
+       #- python3-virtualenv  # debian only(?)
+       - python-virtualenv
+       - rsync
+       - cowsay
+       - filters
+       - unzip
+       - p7zip
+       - gawk
+       - etckeeper
+
+    - name: install apt packages
+      apt: "name='{{ item }}' state=present"
+      become: true
+      with_items:
+        - git
+        - python-pip
+        - apt-transport-https
+        - ca-certificates

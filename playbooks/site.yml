@@ -1,0 +1,11 @@
+---
+
+- include: basics.yml
+- include: prepare_docker.yml
+
+#- include: letsencrypt.yml
+
+- include: services.yml
+
+- include: nginx.yml
+

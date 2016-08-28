@@ -1,0 +1,31 @@
+domain: "localhost"
+
+domains:
+  # maybe not needed in the future - could be defined on the services
+  # domains to get a letsencrypt cert for
+  - "{{ domain }}"
+  - "www.{{ domain }}"
+  - "read.{{ domain }}"
+  - "blog.{{ domain }}"
+  - "blxg.{{ domain }}"
+  - "dav.{{ domain }}"
+  - "wiki.{{ domain }}"
+  - "s.{{ domain }}"
+  - "xmpp.{{ domain }}"
+  - "conference.{{ domain }}"
+  - "pubsub.{{ domain }}"
+  - "imap.{{ domain }}"
+
+dokuwiki_data_path: "../dokuwiki/data/"  # data path on server
+
+
+services:
+  ttrss:
+    # data is stored in an attached pgsql
+    # right now no real backup solution (if you dont want to store the data container)
+    internal_port: 8090
+    domain: "read.{{ domain }}"
+
+  dokuwiki:
+    internal_port: 8080
+    domain: "wiki.{{ domain }}"

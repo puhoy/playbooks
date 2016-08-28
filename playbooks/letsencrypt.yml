@@ -1,0 +1,31 @@
+---
+# https://xdeb.org/node/1614
+
+- name: get a letsencrypt cert
+  hosts: all
+  become: true
+  tasks:
+
+  - name: create csr with all the domains
+    command: 'openssl req -new -sha256 -key /etc/ssl/letsencrypt/domain.key -subj "/C=US/O=Acme/CN={{ domain }}" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName={% for domain in domains %}DNS:{{ domain }}{% if not loop.last %},{% endif %}{% endfor %}")) -out /etc/ssl/letsencrypt/{{ domain }}/domain.csr'
+
+  - letsencrypt:
+      account_key: /etc/pki/cert/private/account.key
+      csr: /etc/ssl/letsencrypt/{{ domain }}/domain.csr
+      dest: /etc/httpd/ssl/sample.com.crt
+    register: sample_com_challenge
+
+  - copy:
+      dest: /var/www/html/{{ sample_com_http_challenge['challenge_data']['sample.com']['http-01']['resource'] }}
+      content: "{{ sample_com_http_challenge['challenge_data']['sample.com']['http-01']['resource_value'] }}"
+      when: sample_com_challenge|changed
+
+  - command: python -m SimpleHTTPServer
+    args:
+      chdir: /var/www/html/
+
+  - letsencrypt:
+      account_key: /etc/pki/cert/private/account.key
+      csr: /etc/pki/cert/csr/sample.com.csr
+      dest: /etc/httpd/ssl/sample.com.crt
+      data: "{{ sample_com_challenge }}"
