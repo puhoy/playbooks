@@ -23,9 +23,27 @@ services:
   ttrss:
     # data is stored in an attached pgsql
     # right now no real backup solution (if you dont want to store the data container)
-    internal_port: 8090
+    web_port: 8090
     domain: "read.{{ domain }}"
 
   dokuwiki:
-    internal_port: 8080
+    web_port: 8080
     domain: "wiki.{{ domain }}"
+    paths:
+      data: ""
+      conf: ""
+      plugins: ""
+
+  prosody:
+    web_port: 8070
+    recaptcha_private_key: ""
+    recaptcha_public_key: ""
+    admin_user: ""
+    admin_domain: ""
+    admin_password: ""
+    paths:
+      conf: ""
+      lib: ""
+      log: ""
+      modules: ""
+

@@ -154,3 +154,4 @@ fabric.properties
 ansible/
 */.vagrant
 .idea
+all.yml

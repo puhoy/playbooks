@@ -71,6 +71,7 @@ http {
     }
 
     {% for service in services %}
+    {% if services[service]['web_port']%}
 	server {
         listen 443 ssl;
         listen [::]:443 ssl;
@@ -85,9 +86,10 @@ http {
         location / {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
-            proxy_pass http://localhost:{{ services[service]['internal_port'] }}/;
+            proxy_pass http://localhost:{{ services[service]['web_port'] }}/;
         }
     }
+    {% endif %}
     {% endfor %}
 }
 

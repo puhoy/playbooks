@@ -15,3 +15,6 @@ todo:
  - prosody
  - gitolite
 
+howto
+=====
+
