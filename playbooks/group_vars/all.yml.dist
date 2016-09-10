@@ -16,8 +16,7 @@ domains:
   - "pubsub.{{ domain }}"
   - "imap.{{ domain }}"
 
-letsencrypt_key_path: ""  # *.crt
-letsencrypt_cert_path: ""  # *.key
+letsencrypt_key_path: "/etc/letsencrypt/live/{{ domain }}"
 
 services:
   ttrss:

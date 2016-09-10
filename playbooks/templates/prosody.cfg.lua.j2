@@ -143,8 +143,8 @@ allow_registration = false;
 min_seconds_between_registrations = 3600
 
 ssl = {
-      certificate = "{{ letsencrypt_cert_path }}";  # fullchain
-      key = "{{ letsencrypt_key_path }}";  # /path/to/privkey/privkey.pem
+      certificate = "{{ letsencrypt_key_path }}/fullchain.pem";
+      key = "{{ letsencrypt_key_path }}/privkey.pem";
       capath = "/etc/ssl/certs";
 }
 

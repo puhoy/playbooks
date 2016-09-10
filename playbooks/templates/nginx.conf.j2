@@ -77,8 +77,8 @@ http {
         listen [::]:443 ssl;
         server_name  {{ services[service]['domain'] }};
 
-        ssl_certificate {{ letsencrypt_cert_path }};
-        ssl_certificate_key {{ letsencrypt_key_path }};
+        ssl_certificate {{ letsencrypt_key_path }}/fullchain.pem;
+        ssl_certificate_key {{ letsencrypt_key_path }}/privkey.pem;
 
         root /usr/share/nginx/html;
         index index.html index.htm;
