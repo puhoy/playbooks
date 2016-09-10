@@ -16,8 +16,8 @@ domains:
   - "pubsub.{{ domain }}"
   - "imap.{{ domain }}"
 
-dokuwiki_data_path: "../dokuwiki/data/"  # data path on server
-
+letsencrypt_key_path: ""  # *.crt
+letsencrypt_cert_path: ""  # *.key
 
 services:
   ttrss:

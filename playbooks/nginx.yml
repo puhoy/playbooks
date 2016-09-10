@@ -3,13 +3,12 @@
   become: true
 
   tasks:
-
   - name: make nginx conf dir
     file: path=/var/nginx/conf state=directory
 
   - name: copy nginx config
     template:
-      src: "templates/nginx.conf.j2"
+      src: "{{ playbook_dir }}/templates/nginx.conf.j2"
       dest: "/var/nginx/conf/nginx.conf"
       owner: "www-data"
       group: "www-data"
@@ -17,7 +16,7 @@
 
   - name: copy mime.types
     template:
-      src: "files/mime.types"
+      src: "{{ playbook_dir }}/files/mime.types"
       dest: "/var/nginx/conf/mime.types"
       owner: "www-data"
       group: "www-data"

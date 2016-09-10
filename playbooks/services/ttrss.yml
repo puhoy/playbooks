@@ -1,0 +1,29 @@
+- name: docker services
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - docker_service:
+    when: services["ttrss"] is defined
+
+      project_name: tt-rss
+      definition:
+         version: '2'
+         services:
+          ttrss:
+            image: clue/ttrss
+            links:
+            - "ttrss-postgres:db"
+            ports:
+            - "{{ services['ttrss']['web_port'] }}:80"
+            container_name: ttrss
+            environment:
+            - "DB_PORT=5432"
+            - "DB_TYPE=pgsql"
+            - "DB_HOST=ttrss-postgres"
+            - "SELF_URL_PATH=https://{{ services['ttrss']['domain'] }}/"
+
+          ttrss-postgres:
+            image: nornagon/postgres
+            container_name: ttrss-postgres

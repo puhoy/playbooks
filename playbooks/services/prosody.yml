@@ -1,0 +1,39 @@
+- name: docker services
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - docker_service:
+    when: services["prosody"] is defined
+
+      project_name: prosody
+      definition:
+        version: "2"
+        service:
+          prosody:
+            image: prosody/prosody:0.10
+            links:
+            - "prosody-postgres"
+            ports:
+            - "5222:5222"  # c2s
+            - "5269:5269"  # s2s
+            - "5280:5280"  # BOSH
+            - "5281:5281"  # Secure BOSH
+            - "5347:5347"  # xmpp component
+            - "services['prosody']['web_port']:80"  # HTTP
+
+            volumes:
+            - "{{ services['prosody']['paths']['conf'] }}:/etc/prosody:ro"
+            - "{{ services['prosody']['paths']['lib'] }}:/var/lib/prosody"
+            - "{{ services['prosody']['paths']['log'] }}:/var/log/prosody"
+            - "{{ services['prosody']['paths']['modules'] }}:/usr/lib/prosody-modules"
+
+            environment:
+            - "LOCAL={{ services['prosody']['admin_user'] }}"
+            - "DOMAIN={{ services['prosody']['admin_domain'] }}"
+            - "PASSWORD={{ services['prosody']['admin_password'] }}"
+
+          prosody-postgres:
+            image: nornagon/postgres
+            container_name: prosody-postgres

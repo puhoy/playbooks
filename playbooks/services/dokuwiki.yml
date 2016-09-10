@@ -1,0 +1,22 @@
+- name: docker services
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - docker_service:
+    when: services["dokuwiki"] is defined
+
+      project_name: dokuwiki
+      definition:
+       version: '2'
+       services:
+        dokuwiki:
+          image: mprasil/dokuwiki
+          container_name: dokuwiki
+          volumes:
+            - "{{ services['dokuwiki`]['paths']['data'] }}:/dokuwiki/data"
+            - "{{ services['dokuwiki']['paths']['conf'] }}/conf:/dokuwiki/conf"
+            - "{{ services['dokuwiki']['paths']['plugins'] }}/lib/plugins:/dokuwiki/lib/plugins"
+          ports:
+            - "{{ services['dokuwiki']['web_port'] }}:80"
